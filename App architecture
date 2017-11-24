@@ -1,0 +1,52 @@
+Two parts:
+
+
+- generating random data between (-10, 10) on X and (-10, 10) on Y
+    - each coordinate can hold only one event
+
+- queries on the distance
+    - adjust the range of search so that it contains at least 7-8 events
+    - search for coordinates
+    - search for minimum price Ticket
+
+Data representations:
+
+- struct/ class for Ticket { price}
+- struct/ class for event  { identifier, ticket_list}
+- class for point in a plane {
+        XCoord, YCoord, Event, maximum number of neighbour events, list of neighbour events
+
+  }
+- class for plane
+
+Ideas:
+    - use hashmaps?
+    - use quad trees?
+    - use 2D BST?
+    - interval trees
+    - binary indexed trees?
+
+Answer: assume a default range and use 2D range trees
+    Use dynamic programming for preprocessing a density matrix
+    Adjust range of search for each query until density is acceptable
+
+Questions:
+    - real coordinates or integers?
+    - should there be an uniform distribution of events on the map?
+    - any maximum threshold for the distance between
+
+
+
+Agorithm:
+
+Store all the points in the plane into a matrix with coordinates that are
+greater with 10(the absolute value of the lower bounds) that the actual coordinates of the points in the plane
+
+For each cell of the matrix use a EventPlanePoint object to store the the coordinates of the point and an array of Five elements representing the closest 5 points to the current point
+
+Using dynamic programming method iterate the matrix from the 4 corners and calculate process the closest 5 neighbours for each point(with regards to the iteration direction)
+
+The complexity for this is O(4 * height * width * 5) or 4 * 20 * 20 * 5(preprocessing time) and
+the complexity for a query is O(1)
+
+
