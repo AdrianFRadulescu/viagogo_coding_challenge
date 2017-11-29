@@ -260,7 +260,7 @@ EventPlane::EventPlane(const int& rXLower, const int& rYLower, const int& rXUppe
         }
     }
 
-    //std::cout << "grids created\n";
+    std::cout << "grid and auxiliaries created\n";
     // initialize the points that contain events
 
     for (auto it = rEventPoints.begin(); it != rEventPoints.end(); it ++) {
@@ -274,7 +274,7 @@ EventPlane::EventPlane(const int& rXLower, const int& rYLower, const int& rXUppe
          }
     }
 
-    //std::cout << "points added\n";
+    std::cout << "points added to the plane\n";
 
     // a function that checks if a given index is within the bounds of the grid
     std::function<bool(int, int, int, int)> check_if_within_bounds = [](int index, int increment_value, int lower_bound, int upper_bound){
@@ -304,7 +304,7 @@ EventPlane::EventPlane(const int& rXLower, const int& rYLower, const int& rXUppe
         }
     }
 
-    //std::cout << "\n4 calc made\n";
+    std::cout << "\n individual calculations made\n";
 
     // combine the results of the 4 matrices
 
@@ -326,7 +326,7 @@ EventPlane::EventPlane(const int& rXLower, const int& rYLower, const int& rXUppe
         }
     }
 
-    //std::cout << "final calc made\n";
+    std::cout << "final calculations made\n";
 
     // delete the auxiliary matrices
 
@@ -341,7 +341,7 @@ EventPlane::EventPlane(const int& rXLower, const int& rYLower, const int& rXUppe
 
     for (int k = 0; k < 4; k ++)
         delete pAuxGrid[k];
-    //std::cout << "mem freed\n";
+    std::cout << "mem freed\n";
 }
 
 int EventPlane::getXLower() const {

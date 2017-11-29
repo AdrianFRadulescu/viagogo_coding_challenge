@@ -1,15 +1,17 @@
 
 Architecture:
 
-In my approach I used the Object Oriented Paradigm with some elements from the 
-Functional Programming one(lambda functions).
+In my approach I used the Object Oriented Paradigm with some elements from the
+Functional Programming one(lambda functions) and C++ as the programming language.
 
 The program is divided in 5 files(main file, 2 headers, 2 implementations).
 
-event.h/event.cpp - contains the data types for the Tickets and class Event containing a set of tickets(ordered by price)
-event_plane.h/event_plane.cpp - contains the class for EventPlane and EventPlanePoint and the function which generates random events which will be latter inserted into the plane
+event.h/event.cpp - contains the data types for the Tickets and class Event containing a set of ticket (ordered by price)
+event_plane.h/event_plane.cpp - contains the class for EventPlane and EventPlanePoint and the function which
+                                generates random events which will be latter inserted into the plane
 
-main.cpp - the main file which links the other, calls the functions for creating random events, inserting them into the EventPlane object and then responds to queries
+main.cpp - the main file which links the other, calls the functions for creating random events, inserting
+           them into the EventPlane object and then responds to queries
 
 Descriptions of the individual objects, structs and functions are present in the header files.
 
@@ -19,32 +21,70 @@ Main Algorithm:
 Store all the points in the plane into a matrix with coordinates that are
 greater with 10 (the absolute value of the lower bounds) that the actual coordinates of the points in the plane
 
-For each cell of the matrix use an EventPlanePoint object to store the coordinates of the point and an array of five elements representing the closest 5 points to the current point
+For each cell of the matrix use an EventPlanePoint object to store the coordinates of the point and an array
+of five elements representing the closest 5 points to the current point
 
-Using dynamic programming, iterate the matrix from the 4 corners and find the closest 5 neighbours for each point (with regards to the iteration direction).
-This is done by merging the closest events from the neighbour cells and the list of closest events of the current point so far (stop when the list has 5 elements).
+Using dynamic programming, iterate the matrix from the 4 corners and find the closest 5 neighbours for each
+point (with regards to the iteration direction).
+This is done by merging the closest events from the neighbour cells and the list of closest events of the
+current point so far (stop when the list has 5 elements).
 
 The complexity for this is O (4 * height * width * 5) or 4 * 20 * 20 * 5(pre-processing time) and the complexity for a query is O(1)
 
 
 Assumptions:
 
-My assumption is that for each point/cell of the grid the path from each event will always
-pass through one of its four neighbour cells, thus merging the closest events of the neighbours and the point's own list will keep the order based on the distances to the current point.
+My assumption is that for each point/cell of the grid the path from each event will always pass through one
+of its four neighbour cells, thus merging the closest events of the neighbours and the point's own list will
+keep the order based on the distances to the current point.
 
 
 Handling multiple events at the same location:
 
-The program as it is so far should be able to handle multiple events occurring
-at the same location, if some small modifications are made to the generation function.
+The program so far should be able to handle multiple events occurring at the same location,
+if some small modifications are made to the generation function.
 
 Handling a much larger world:
 
-I thought about two main ways 
+I though about two ways in which this could be handled:
+
+1. Creating a hash function which maps events from a plane with larger bounds to a smaller plane
+with lower bounds like the one in the original problem and a reverse function which recreates the
+original coordinates from the hashed ones, thus reducing the problem to the previous extension, in which
+multiple events are located one the same coordinates.
+This approach might require additional members in the Event class to serve as parameters for the function
+and a slight change of the distance function from EventPlanePoint class in order to take those parameters
+into account. The advantage of this method remains the reduced query time, while the disadvantage is the
+high update time, due to the need to recalculate the whole data in the plane(although I think some
+optimisations could be made in order to avoid this). Overall, the changes to the program would be minimal.
+
+2. Using data structures like 2D Trees or 2D Range Trees in order to store the events so that when querying
+the operation would involve finding a range of target points containing which could be the closest events
+to the given point. This would have a higher query complexity(logarithmic one) but a lower update one. The
+only disadvantage of this approach is that the implementation would be harder and a set of rules would be
+needed in order to determine the range in which the events should be searched for. This makes it less robust
+because it is more dependent on human assumptions(the search range) than the other one. In addition to this
+there would be multiple changes to the logic and implementation of the program (completely changing the
+algorithm and thus some main parts of the EventPlane class, I think the others could go on as they are or
+maybe with slight adjustments).
 
 
-------------------------------------------------------------------------------------------
-Here are some notes and ideas I wrote while searching for a solution
+As a closing note, I tried to provide as much functionality and robustness to the program as I could and
+make it as customisable as possible for larger purposes. This  resulted in a longer implementation than it
+might have been necessary and in a longer time spent debugging it.
+
+I chose C++, because is my favourite programming language and I wanted to improve my coding skills in this
+language and practice it more, as I didn't have that many chances during the last two years.
+I could have done it in Python or JAVA(much faster) or even in Haskell, but I found it more challenging
+this way. If I will be hired and my work will involve C++ programming, then I look forward to work with more
+language features such as templates or functors(self defined, as I already used STL data structures in my program).
+
+
+
+---------------------------------------------------------------------------------------------------------------
+Thought process:
+
+Here are some thoughts and ideas I wrote while searching for a solution
 
 
 Two parts:

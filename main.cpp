@@ -23,17 +23,26 @@ int main() {
 
     std::string user_input;
 
-    std::cin >> user_input;
+    std::getline(std::cin, user_input);
+    std::cout << user_input << "\n";
 
     // parse user input
-    int coordinates[2] = {0 , 0}, coord_index = 0;
+    int coordinates[2] = {0 , 0}, coord_index = 0, sign_index = 0, sign[2] = {1, 1};
     for (auto it : user_input) {
         if ('0' <= it && it <='9') {
             coordinates[coord_index] = coordinates[coord_index] * 10 + (it - '0');
-        } else if (coordinates[coord_index] != 0 ){
+        } else if (it == '-') {
+            sign[sign_index ++] = -1;
+        } else if (coord_index == 0 && it != 0) {
+            std::cout << it << "\n";
             coord_index ++;
+            sign_index ++;
         }
     }
+
+    for (int i = 0; i < 2; i ++)
+        coordinates[i] *= sign[i];
+
 
     std::cout << coordinates[0] << " " << coordinates[1] << "\n";
 
