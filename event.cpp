@@ -21,17 +21,15 @@ Event::Event(const int& rID, const Ticket& rTicket) {
 Event::Event(const int& rID, const size_t& rNumberOfTickets, const Ticket rTickets[]) {
 
     this ->mID = rID;
-    for (int i = 0; i < rNumberOfTickets; i ++) {
+    for (int i = 0; i < rNumberOfTickets; i ++)
         this ->mTickets.insert(rTickets[i]);
-    }
 }
 
 Event::Event(const int& rID, const std::vector<Ticket>& rTickets) {
 
     this ->mID = rID;
-    for (auto ticket : rTickets) {
+    for (auto ticket : rTickets)
         this ->mTickets.insert(ticket);
-    }
 }
 
 Event::Event(const Event& event) {
@@ -64,8 +62,7 @@ Ticket Event::popTicketWithPrice(double price) {
     auto it = this ->mTickets.find(aux_ticket);
     if (it != this->mTickets.end()) {
         return *it;
-    }
-    else {
+    } else {
         aux_ticket = {-1};
         return aux_ticket;
     }

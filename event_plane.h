@@ -140,6 +140,7 @@ class EventPlane {
      * Creates an empty plane
      */
     EventPlane(const int&, const int&, const int&, const int&, const std::vector<EventPlanePoint>&);
+    ~EventPlane();
 
     // getters and setters
 

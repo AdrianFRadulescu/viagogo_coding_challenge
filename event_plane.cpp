@@ -260,21 +260,21 @@ EventPlane::EventPlane(const int& rXLower, const int& rYLower, const int& rXUppe
         }
     }
 
-    std::cout << "grids created\n";
+    //std::cout << "grids created\n";
     // initialize the points that contain events
 
     for (auto it = rEventPoints.begin(); it != rEventPoints.end(); it ++) {
          for (int k = 0; k < 4; k ++) {
-             std::cout << it ->getX() - this ->mXLower << " " << it ->getY() - this ->mYLower;
+             //std::cout << it ->getX() - this ->mXLower << " " << it ->getY() - this ->mYLower;
 
              pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->mYLower] ->setEvent(it ->getEvent());
              this ->mpGrid[it ->getX() - this ->mXLower][it ->getY() - this ->mYLower] ->setEvent(it ->getEvent());
 
-             std::cout << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getX() + 10 << " , " << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getY() + 10<< " " << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getNeighbourEvents().size() << "\n";
+             //std::cout << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getX() + 10 << " , " << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getY() + 10<< " " << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getNeighbourEvents().size() << "\n";
          }
     }
 
-    std::cout << "points added\n";
+    //std::cout << "points added\n";
 
     // a function that checks if a given index is within the bounds of the grid
     std::function<bool(int, int, int, int)> check_if_within_bounds = [](int index, int increment_value, int lower_bound, int upper_bound){
@@ -282,7 +282,7 @@ EventPlane::EventPlane(const int& rXLower, const int& rYLower, const int& rXUppe
     };
 
     for (int k = 0; k < 4; k ++) {
-        std::cout << k << "/////////////////////////////////////////// " << grid_corners[3 - k].first << " " << grid_corners[3 - k].second << "\n";
+        //std::cout << k << "/////////////////////////////////////////// " << grid_corners[3 - k].first << " " << grid_corners[3 - k].second << "\n";
 
         for (int i = grid_corners[k].first; i != grid_corners[3 - k].first; i += increments[k].first) {
             for (int j = grid_corners[k].second; j != grid_corners[3 - k].second; j += increments[k].second) {
@@ -303,29 +303,13 @@ EventPlane::EventPlane(const int& rXLower, const int& rYLower, const int& rXUppe
             }
         }
     }
-    for (auto it : pAuxGrid[0][2][2]->getNeighbourEvents()) {
-        std::cout <<"(" << it.getX() + 10 << "," << it.getY() + 10 << ") ";
-    }
-    std::cout << "\n";
-    for (auto it : pAuxGrid[0][1][3]->getNeighbourEvents()) {
-        std::cout <<"(" << it.getX() + 10 << "," << it.getY() + 10 << ") ";
-    }
-    std::cout << "\n";
-    for (auto it : pAuxGrid[1][2][4]->getNeighbourEvents()) {
-        std::cout <<"(" << it.getX() + 10 << "," << it.getY() + 10 << ") ";
-    }
-    std::cout << "\n";
-    for (auto it : pAuxGrid[0][2][3]->getNeighbourEvents()) {
-        std::cout <<"(" << it.getX() + 10 << "," << it.getY() + 10 << ") ";
-    }
 
-    std::cout << "\n4 calc made\n";
+    //std::cout << "\n4 calc made\n";
 
     // combine the results of the 4 matrices
 
     for (int i = 0; i < this ->mRows; i ++) {
         for (int j = 0; j < this ->mCols; j ++) {
-
             for (int k = 0; k < 4; k ++){
 
                 bool i_condition = check_if_within_bounds(i, increments[k].first, 0, this ->mRows);
@@ -342,11 +326,7 @@ EventPlane::EventPlane(const int& rXLower, const int& rYLower, const int& rXUppe
         }
     }
 
-    for (auto it : this ->mpGrid[2][3] ->getNeighbourEvents()) {
-        std::cout <<"(" << it.getX() + 10 << "," << it.getY() + 10 << ") ";
-    }
-
-    std::cout << "final calc made\n";
+    //std::cout << "final calc made\n";
 
     // delete the auxiliary matrices
 
@@ -361,7 +341,7 @@ EventPlane::EventPlane(const int& rXLower, const int& rYLower, const int& rXUppe
 
     for (int k = 0; k < 4; k ++)
         delete pAuxGrid[k];
-    std::cout << "mem freed\n";
+    //std::cout << "mem freed\n";
 }
 
 int EventPlane::getXLower() const {
@@ -378,6 +358,16 @@ int EventPlane::getXUpper() const {
 
 int EventPlane::getYUpper() const {
     return mYUpper;
+}
+
+EventPlane::~EventPlane() {
+
+    for (int i = 0; i < this ->mRows; i ++) {
+        for (int j = 0; j < this ->mCols; j ++)
+                delete this ->mpGrid[i][j];
+
+        delete this ->mpGrid[i];
+    }
 }
 
 std::vector<EventPlanePoint> EventPlane::getNeighbourEventsOf(const int& rXCoord, const int& rYCoord) {
@@ -435,31 +425,31 @@ std::vector<EventPlanePoint> generateRandomEvents(const int& rXLower, const int&
 
     int limit = number_of_elements_distribution(generator) ;
     size_t number_of_tickets;
-    std::cout << "nr of elem: " << limit << "\n";
+    //std::cout << "nr of elem: " << limit << "\n";
     for (int i = 0; i < limit; i ++) {
 
         x_coord = x_coordinate_distribution(generator) - rXLower;
         y_coord = y_coordinate_distribution(generator) - rYLower;
-        std::cout << x_coord << " " << y_coord << "\n";
+        //std::cout << x_coord << " " << y_coord << "\n";
 
         if (x_already_used[x_coord]
             &&y_already_used[y_coord]) {
             continue;
         }
+
         // mark point as used
         x_already_used[x_coord] = 1;
         y_already_used[y_coord] = 1;
 
-        std::cout << x_coord << " " << y_coord << "\n";
+        //std::cout << x_coord << " " << y_coord << "\n";
         // generate random number of tickets with random prices
         number_of_tickets = (size_t) number_of_elements_distribution(generator);
         Ticket tickets[number_of_tickets];
-        for (int j = 0; j < number_of_tickets; j ++) {
+        for (int j = 0; j < number_of_tickets; j ++)
             tickets[j] = {price_distribution(generator)};
-        }
-        std::cout << number_of_tickets << "\n";
+        //std::cout << number_of_tickets << "\n";
         points.emplace_back(x_coord + rXLower, y_coord + rYLower, Event(i, number_of_tickets, tickets));
-        std::cout << "finished point "<< i << " \n";
+        //std::cout << "finished point "<< i << " \n";
     }
     return points;
 }
