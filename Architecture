@@ -1,0 +1,86 @@
+
+Architecture:
+
+In my approach I used the Object Oriented Paradigm with some elements from the 
+Functional Programming one(lambda functions).
+
+The program is divided in 5 files(main file, 2 headers, 2 implementations).
+
+event.h/event.cpp - contains the data types for the Tickets and class Event containing a set of tickets(ordered by price)
+event_plane.h/event_plane.cpp - contains the class for EventPlane and EventPlanePoint and the function which generates random events which will be latter inserted into the plane
+
+main.cpp - the main file which links the other, calls the functions for creating random events, inserting them into the EventPlane object and then responds to queries
+
+Descriptions of the individual objects, structs and functions are present in the header files.
+
+
+Main Algorithm:
+
+Store all the points in the plane into a matrix with coordinates that are
+greater with 10 (the absolute value of the lower bounds) that the actual coordinates of the points in the plane
+
+For each cell of the matrix use an EventPlanePoint object to store the coordinates of the point and an array of five elements representing the closest 5 points to the current point
+
+Using dynamic programming, iterate the matrix from the 4 corners and find the closest 5 neighbours for each point (with regards to the iteration direction).
+This is done by merging the closest events from the neighbour cells and the list of closest events of the current point so far (stop when the list has 5 elements).
+
+The complexity for this is O (4 * height * width * 5) or 4 * 20 * 20 * 5(pre-processing time) and the complexity for a query is O(1)
+
+
+Assumptions:
+
+My assumption is that for each point/cell of the grid the path from each event will always
+pass through one of its four neighbour cells, thus merging the closest events of the neighbours and the point's own list will keep the order based on the distances to the current point.
+
+
+Handling multiple events at the same location:
+
+The program as it is so far should be able to handle multiple events occurring
+at the same location, if some small modifications are made to the generation function.
+
+Handling a much larger world:
+
+I thought about two main ways 
+
+
+------------------------------------------------------------------------------------------
+Here are some notes and ideas I wrote while searching for a solution
+
+
+Two parts:
+- generating random data between (-10, 10) on X and (-10, 10) on Y
+    - each coordinate can hold only one event
+
+- queries on the distance
+    - adjust the range of search so that it contains at least 7-8 events
+    - search for coordinates
+    - search for minimum price Ticket
+
+Data representations:
+- struct/ class for Ticket { price}
+- struct/ class for event  { identifier, ticket_list}
+- class for point in a plane {
+        XCoord, YCoord, Event, maximum number of neighbour events, list of neighbour events
+  }
+- class for plane
+
+Ideas:
+    - use hashmaps?
+    - use quad trees?
+    - use 2D BST?
+    - interval trees
+    - binary indexed trees?
+
+Answer: assume a default range and use 2D range trees
+    Use dynamic programming for preprocessing a density matrix
+    Adjust range of search for each query until density is acceptable
+
+Questions:
+    - real coordinates or integers?
+    - should there be an uniform distribution of events on the map?
+    - any maximum threshold for the distance between
+
+
+
+
+

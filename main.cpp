@@ -17,7 +17,10 @@ int main() {
         std::cout << "\n";
     }
 
-    EventPlane event_plane = EventPlane(-10, -10, 10, 10, event_points);
+    EventPlane event_plane = EventPlane(-10, -10, 11, 11, event_points);
+    for (auto it : event_plane.getNeighbourEventsOf(6, 5)){
+        std::cout << it.getX() << " " << it.getY() << "\n";
+    }
 
     std::cout << "Please Input Coordinates:\n> ";
 

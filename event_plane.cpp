@@ -265,9 +265,12 @@ EventPlane::EventPlane(const int& rXLower, const int& rYLower, const int& rXUppe
 
     for (auto it = rEventPoints.begin(); it != rEventPoints.end(); it ++) {
          for (int k = 0; k < 4; k ++) {
-             pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->setEvent(it ->getEvent());
-             this ->mpGrid[it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->setEvent(it ->getEvent());
-             //std::cout << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getX() + 10 << " , " << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getY() + 10<< " " << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getNeighbourEvents().size() << "\n";
+             std::cout << it ->getX() - this ->mXLower << " " << it ->getY() - this ->mYLower;
+
+             pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->mYLower] ->setEvent(it ->getEvent());
+             this ->mpGrid[it ->getX() - this ->mXLower][it ->getY() - this ->mYLower] ->setEvent(it ->getEvent());
+
+             std::cout << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getX() + 10 << " , " << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getY() + 10<< " " << pAuxGrid[k][it ->getX() - this ->mXLower][it ->getY() - this ->getYLower()] ->getNeighbourEvents().size() << "\n";
          }
     }
 
@@ -432,24 +435,31 @@ std::vector<EventPlanePoint> generateRandomEvents(const int& rXLower, const int&
 
     int limit = number_of_elements_distribution(generator) ;
     size_t number_of_tickets;
-
+    std::cout << "nr of elem: " << limit << "\n";
     for (int i = 0; i < limit; i ++) {
 
-        if (x_already_used[(x_coord = x_coordinate_distribution(generator) - rXLower)]
-            &&y_already_used[(y_coord = y_coordinate_distribution(generator) - rYLower)]) {
+        x_coord = x_coordinate_distribution(generator) - rXLower;
+        y_coord = y_coordinate_distribution(generator) - rYLower;
+        std::cout << x_coord << " " << y_coord << "\n";
+
+        if (x_already_used[x_coord]
+            &&y_already_used[y_coord]) {
             continue;
         }
         // mark point as used
         x_already_used[x_coord] = 1;
         y_already_used[y_coord] = 1;
+
+        std::cout << x_coord << " " << y_coord << "\n";
         // generate random number of tickets with random prices
         number_of_tickets = (size_t) number_of_elements_distribution(generator);
         Ticket tickets[number_of_tickets];
         for (int j = 0; j < number_of_tickets; j ++) {
             tickets[j] = {price_distribution(generator)};
         }
-
+        std::cout << number_of_tickets << "\n";
         points.emplace_back(x_coord + rXLower, y_coord + rYLower, Event(i, number_of_tickets, tickets));
+        std::cout << "finished point "<< i << " \n";
     }
     return points;
 }
