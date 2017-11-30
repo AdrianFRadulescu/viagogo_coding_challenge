@@ -11,5 +11,4 @@ To run this file after git pulling use the following commands:
     g++ -Wall -Werror -std=c++11 main.cpp event.cpp event_plane.cpp -o main.o
   
     ./main.o
-
-The program was written on a Mac OS X.
+The program generates random events on the grid, prints them and then asks the user to input the coordinates of a point, after which it returns the data available on the closest events it finds.
